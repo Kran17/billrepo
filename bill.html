@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grocery Shop Bill Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    #calculator {
+        width: 400px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #666;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #af4ca2;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    #itemList {
+        margin-top: 10px;
+    }
+
+    #totalAmount {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .item {
+        margin-bottom: 5px;
+        color: #333;
+    }
+</style>
+</head>
+<body>
+<div id="calculator">
+    <h2>Grocery Shop Bill Calculator</h2>
+    <form id="billForm">
+        <label for="itemName">Item Name:</label>
+        <input type="text" id="itemName" required>
+        <label for="itemPrice">Price per Item:</label>
+        <input type="number" id="itemPrice" min="0.01" step="0.01" required>
+        <label for="itemQuantity">Quantity:</label>
+        <input type="number" id="itemQuantity" min="1" step="1" required>
+        <button type="button" onclick="addItem()">Add Item</button>
+    </form>
+    <div id="itemList">
+        <!-- Item list will be displayed here -->
+    </div>
+    <div id="totalAmount"></div>
+</div>
+
+<script>
+    let items = [];
+
+    function addItem() {
+        const itemName = document.getElementById("itemName").value;
+        const itemPrice = parseFloat(document.getElementById("itemPrice").value);
+        const itemQuantity = parseInt(document.getElementById("itemQuantity").value);
+
+        if (!itemName || isNaN(itemPrice) || isNaN(itemQuantity)) {
+            alert("Please fill in all fields correctly.");
+            return;
+        }
+
+        items.push({ name: itemName, price: itemPrice, quantity: itemQuantity });
+        displayItems();
+        calculateTotal();
+        clearInputs();
+    }
+
+    function displayItems() {
+        const itemListDiv = document.getElementById("itemList");
+        itemListDiv.innerHTML = "";
+        items.forEach(item => {
+            itemListDiv.innerHTML += `<div class="item">${item.quantity} x ${item.name} -  Rs.${item.price.toFixed(2)} each</div>`;
+        });
+    }
+
+    function calculateTotal() {
+        const totalAmountDiv = document.getElementById("totalAmount");
+        let total = 0;
+        items.forEach(item => {
+            total += item.price * item.quantity;
+        });
+        totalAmountDiv.textContent = `Total Amount: Rs.${total.toFixed(2)}`;
+    }
+
+    function clearInputs() {
+        document.getElementById("itemName").value = "";
+        document.getElementById("itemPrice").value = "";
+        document.getElementById("itemQuantity").value = "";
+    }
+</script>
+</body>
+</html>
